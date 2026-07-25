@@ -63,14 +63,21 @@ export default function ManageSettings() {
             
             const reader = new FileReader()
             reader.onloadend = () => {
+                // If image is under 1.5MB, upload original directly for 100% native untouched quality
+                if (file.size <= 1.5 * 1024 * 1024) {
+                    setSettings(prev => ({ ...prev, aboutImage: reader.result }))
+                    return
+                }
+                
+                // Otherwise compress to keep it under payload/network timeouts
                 const img = new Image()
                 img.src = reader.result
                 img.onload = () => {
                     const canvas = document.createElement('canvas')
                     const ctx = canvas.getContext('2d')
                     
-                    const MAX_WIDTH = 1000
-                    const MAX_HEIGHT = 1000
+                    const MAX_WIDTH = 1200
+                    const MAX_HEIGHT = 1200
                     let width = img.width
                     let height = img.height
                     
@@ -88,9 +95,13 @@ export default function ManageSettings() {
                     
                     canvas.width = width
                     canvas.height = height
+                    
+                    // Prevent black transparent background on PNG conversion
+                    ctx.fillStyle = '#ffffff'
+                    ctx.fillRect(0, 0, width, height)
                     ctx.drawImage(img, 0, 0, width, height)
                     
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.9)
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.95)
                     setSettings(prev => ({ ...prev, aboutImage: compressedBase64 }))
                 }
             }

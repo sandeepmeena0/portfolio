@@ -1,0 +1,34 @@
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+}
+
+.cursor-outline {
+    width: 36px;
+    height: 36px;
+    border: 2px solid hsla(160, 100%, 40%, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+.cursor-outline.cursor-hover {
+    width: 50px;
+    height: 50px;
+    border-color: var(--accent-primary);
+    background: hsla(160, 100%, 40%, 0.08);
+}
+
+@media (max-width: 768px) {
+    .cursor-dot, .cursor-outline { display: none; }
+}

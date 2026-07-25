@@ -5,7 +5,7 @@ import './Projects.css'
 
 const filters = [
     { label: 'All', value: 'all' },
-    { label: 'Mern Stack', value: 'fullstack' },
+    { label: 'Mern Stack', value: 'mern-stack' },
     { label: 'Frontend', value: 'frontend' },
     { label: 'Backend', value: 'backend' },
 ]

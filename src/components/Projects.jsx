@@ -5,7 +5,7 @@ import './Projects.css'
 
 const filters = [
     { label: 'All', value: 'all' },
-    { label: 'Mern Stack', value: 'fullstack' },
+    { label: 'Mern Stack', value: 'mern-stack' },
     { label: 'Frontend', value: 'frontend' },
     { label: 'Backend', value: 'backend' },
 ]
@@ -30,7 +30,12 @@ export default function Projects() {
 
     const filtered = activeFilter === 'all'
         ? projects
-        : projects.filter(p => p.category === activeFilter)
+        : projects.filter(p => {
+            if (activeFilter === 'mern-stack') {
+                return p.category === 'mern-stack' || p.category === 'mernstack' || p.category === 'fullstack'
+            }
+            return p.category === activeFilter
+        })
 
     return (
         <section className="section projects" id="projects">

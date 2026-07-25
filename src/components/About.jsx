@@ -61,24 +61,11 @@ export default function About() {
                 })
             }
 
-            // Fetch actual projects count and unique tech stack count dynamically
+            // Fetch actual projects count dynamically
             try {
                 const projectsRes = await api.fetchProjects()
-                if (projectsRes.success && projectsRes.data && projectsRes.data.length > 0) {
+                if (projectsRes.success && projectsRes.data) {
                     projectsBuiltCount = projectsRes.data.length
-                    
-                    const uniqueTech = new Set()
-                    projectsRes.data.forEach(p => {
-                        if (p.tech && Array.isArray(p.tech)) {
-                            p.tech.forEach(t => {
-                                const cleanTech = t.trim()
-                                if (cleanTech) uniqueTech.add(cleanTech.toLowerCase())
-                            })
-                        }
-                    })
-                    if (uniqueTech.size > 0) {
-                        technologiesCount = uniqueTech.size
-                    }
                 }
             } catch (err) {
                 // Fallback to settings if fetch fails

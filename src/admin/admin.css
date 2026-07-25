@@ -377,7 +377,7 @@
 
 /* Desktop / Mobile visibility toggles */
 .desktop-only { display: block; }
-.mobile-only { display: none; }
+.mobile-only { display: none !important; }
 
 /* Manage Projects Header */
 .manage-projects-header {
@@ -459,6 +459,7 @@
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
     .mobile-only { display: block !important; }
+    .project-cards-mobile.mobile-only { display: flex !important; }
     .modal-form-row { flex-direction: column; gap: 0; }
     .modal-form-actions { flex-direction: column; }
     .modal-form-actions button { width: 100%; justify-content: center; }

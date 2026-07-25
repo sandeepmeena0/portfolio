@@ -51,11 +51,22 @@ export default function Projects() {
                         </button>
                     ))}
                 </div>
-                <div className="projects-grid">
-                    {filtered.map((project, i) => (
-                        <ProjectCard key={project.title} project={project} index={i} />
-                    ))}
-                </div>
+                {loading ? (
+                    <div className="projects-loading">
+                        <div className="projects-spinner"></div>
+                        <p>Fetching projects from live server... (takes a few seconds if server is waking up)</p>
+                    </div>
+                ) : filtered.length === 0 ? (
+                    <div className="projects-loading">
+                        <p>No projects found. Add some from the admin panel!</p>
+                    </div>
+                ) : (
+                    <div className="projects-grid">
+                        {filtered.map((project, i) => (
+                            <ProjectCard key={project.id || project.title || i} project={project} index={i} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )

@@ -72,8 +72,7 @@ export default function Hero() {
                 <div className="hero-social">
                     <a href="https://github.com/sandeepmeena" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><i className="fab fa-github"></i></a>
                     <a href="https://linkedin.com/in/sandeepmeena" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-                    <a href="https://twitter.com/sandeepmeena" target="_blank" rel="noreferrer" className="social-link" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-                    <a href="mailto:sandeep@example.com" className="social-link" aria-label="Email"><i className="fas fa-envelope"></i></a>
+                    <a href="mailto:sandeepmeena1136@gmail.com" className="social-link" aria-label="Email"><i className="fas fa-envelope"></i></a>
                 </div>
             </div>
             <div className="hero-visual">
@@ -87,16 +86,16 @@ export default function Hero() {
                         <span className="code-title">developer.js</span>
                     </div>
                     <pre className="code-body"><code>{`const `}<span className="code-variable">developer</span>{` = {\n`}
-{`  `}<span className="code-property">name</span>{`: `}<span className="code-string">"Sandeep Meena"</span>{`,\n`}
-{`  `}<span className="code-property">role</span>{`: `}<span className="code-string">"MERN Stack Developer"</span>{`,\n`}
-{`  `}<span className="code-property">skills</span>{`: [\n`}
-{`    `}<span className="code-string">"React"</span>{`, `}<span className="code-string">"Node.js"</span>{`,\n`}
-{`    `}<span className="code-string">"Express"</span>{`, `}<span className="code-string">"MongoDB"</span>{`\n`}
-{`  ],\n`}
-{`  `}<span className="code-method">sayHello</span>{`() {\n`}
-{`    return `}<span className="code-string">"Let's build something!"</span>{`;\n`}
-{`  }\n`}
-{`};`}</code></pre>
+                        {`  `}<span className="code-property">name</span>{`: `}<span className="code-string">"Sandeep Meena"</span>{`,\n`}
+                        {`  `}<span className="code-property">role</span>{`: `}<span className="code-string">"MERN Stack Developer"</span>{`,\n`}
+                        {`  `}<span className="code-property">skills</span>{`: [\n`}
+                        {`    `}<span className="code-string">"React"</span>{`, `}<span className="code-string">"Node.js"</span>{`,\n`}
+                        {`    `}<span className="code-string">"Express"</span>{`, `}<span className="code-string">"MongoDB"</span>{`\n`}
+                        {`  ],\n`}
+                        {`  `}<span className="code-method">sayHello</span>{`() {\n`}
+                        {`    return `}<span className="code-string">"Let's build something!"</span>{`;\n`}
+                        {`  }\n`}
+                        {`};`}</code></pre>
                 </div>
             </div>
             <div className="scroll-indicator">

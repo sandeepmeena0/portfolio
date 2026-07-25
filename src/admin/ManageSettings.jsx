@@ -19,14 +19,18 @@ export default function ManageSettings() {
         fresherText: "Aspiring Developer",
         aboutImage: ''
     })
+    const [originalPhoto, setOriginalPhoto] = useState('')
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
+    const [savingPhoto, setSavingPhoto] = useState(false)
     const [message, setMessage] = useState('')
+    const [photoMessage, setPhotoMessage] = useState('')
 
     useEffect(() => {
         const loadSettings = async () => {
             const res = await api.getSettings()
             if (res.success && res.data) {
+                const fetchedPhoto = res.data.aboutImage || ''
                 setSettings({
                     yearsExperience: res.data.yearsExperience ?? 1,
                     projectsBuilt: res.data.projectsBuilt ?? 10,
@@ -37,8 +41,9 @@ export default function ManageSettings() {
                     aboutText2: res.data.aboutText2 || DEFAULT_TEXT2,
                     isFresher: res.data.isFresher || false,
                     fresherText: res.data.fresherText || "Aspiring Developer",
-                    aboutImage: res.data.aboutImage || ''
+                    aboutImage: fetchedPhoto
                 })
+                setOriginalPhoto(fetchedPhoto)
             }
             setLoading(false)
         }
@@ -106,6 +111,22 @@ export default function ManageSettings() {
                 }
             }
             reader.readAsDataURL(file)
+        }
+    }
+
+    const handleUpdatePhotoOnly = async () => {
+        setSavingPhoto(true)
+        setPhotoMessage('')
+        
+        const res = await api.updateSettings(settings)
+        setSavingPhoto(false)
+        
+        if (res.success) {
+            setOriginalPhoto(settings.aboutImage)
+            setPhotoMessage('Profile photo updated successfully!')
+            setTimeout(() => setPhotoMessage(''), 3000)
+        } else {
+            setPhotoMessage('Failed to update photo.')
         }
     }
 
@@ -241,12 +262,34 @@ export default function ManageSettings() {
 
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)' }}>Profile Photo</label>
-                            <label className="admin-btn btn-edit" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', marginBottom: '8px' }}>
-                                <i className="fas fa-upload" style={{ marginRight: '8px' }}></i> Upload Photo
-                                <input
-                                    type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }}
-                                />
-                            </label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                                <label className="admin-btn btn-edit" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', margin: 0 }}>
+                                    <i className="fas fa-upload" style={{ marginRight: '8px' }}></i> {settings.aboutImage ? 'Change Photo' : 'Upload Photo'}
+                                    <input
+                                        type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }}
+                                    />
+                                </label>
+                                {settings.aboutImage !== originalPhoto && (
+                                    <button 
+                                        type="button" 
+                                        onClick={handleUpdatePhotoOnly} 
+                                        className="admin-btn btn-success" 
+                                        style={{ display: 'inline-flex', alignItems: 'center' }}
+                                        disabled={savingPhoto}
+                                    >
+                                        <i className="fas fa-check" style={{ marginRight: '8px' }}></i> {savingPhoto ? 'Updating...' : 'Update Photo'}
+                                    </button>
+                                )}
+                                {photoMessage && (
+                                    <span style={{ 
+                                        fontSize: '0.85rem', 
+                                        color: photoMessage.includes('success') ? 'var(--accent-primary)' : '#ff4d4f',
+                                        fontWeight: '500'
+                                    }}>
+                                        {photoMessage}
+                                    </span>
+                                )}
+                            </div>
                             <div>
                                 {settings.aboutImage && (
                                     <div style={{ position: 'relative', display: 'inline-block', marginTop: '12px' }}>

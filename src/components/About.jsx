@@ -26,7 +26,6 @@ export default function About() {
         commits: 500
     })
 
-    const [isAdmin, setIsAdmin] = useState(false)
     const [bio, setBio] = useState({
         aboutHeading: "A passionate developer who loves turning ideas into reality",
         aboutText1: "I'm a MERN Stack Developer with a strong foundation in building full-stack web applications. I specialize in creating responsive, user-friendly interfaces with React and robust backend services with Node.js and Express.",
@@ -39,7 +38,6 @@ export default function About() {
     const api = useApi()
 
     useEffect(() => {
-        setIsAdmin(!!localStorage.getItem('adminToken'))
         const loadSettingsAndStats = async () => {
             const res = await api.getSettings()
             let yearsExperience = 1
@@ -123,45 +121,23 @@ export default function About() {
                     <div ref={imageRef} className={`about-image-wrapper animate-hidden fade-right ${imageVisible ? 'animate-visible' : ''}`}>
                         <div className="about-image-container">
                             {bio.aboutImage ? (
-                                <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '20px', overflow: 'hidden' }}>
-                                    <img 
-                                        src={bio.aboutImage} 
-                                        alt="Sandeep Meena" 
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            borderRadius: '20px',
-                                            position: 'relative',
-                                            zIndex: 1,
-                                            border: '1px solid var(--border-color)'
-                                        }}
-                                    />
-                                    {isAdmin && (
-                                        <a 
-                                            href="/admin/settings" 
-                                            className="admin-edit-image-overlay"
-                                            title="Update Profile Photo in Settings"
-                                        >
-                                            <i className="fas fa-camera"></i>
-                                            <span>Update Photo</span>
-                                        </a>
-                                    )}
-                                </div>
+                                <img 
+                                    src={bio.aboutImage} 
+                                    alt="Sandeep Meena" 
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: '20px',
+                                        position: 'relative',
+                                        zIndex: 1,
+                                        border: '1px solid var(--border-color)'
+                                    }}
+                                />
                             ) : (
                                 <div className="about-image-placeholder">
                                     <i className="fas fa-code"></i>
                                     <span>SM</span>
-                                    {isAdmin && (
-                                        <a 
-                                            href="/admin/settings" 
-                                            className="admin-edit-image-overlay"
-                                            title="Upload Profile Photo in Settings"
-                                        >
-                                            <i className="fas fa-camera"></i>
-                                            <span>Upload Photo</span>
-                                        </a>
-                                    )}
                                 </div>
                             )}
                             <div className="about-image-border"></div>

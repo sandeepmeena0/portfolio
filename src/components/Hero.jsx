@@ -70,9 +70,9 @@ export default function Hero() {
                     </a>
                 </div>
                 <div className="hero-social">
-                    <a href="https://github.com/sandeepmeena" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><i className="fab fa-github"></i></a>
-                    <a href="https://linkedin.com/in/sandeepmeena" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-                    <a href="mailto:sandeepmeena1136@gmail.com" className="social-link" aria-label="Email"><i className="fas fa-envelope"></i></a>
+                    <a href="https://github.com/sandeepmeena0" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><i className="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/sandeep-meena70/" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:sandeepmeena1136@gmail.com" target="_blank" rel="noreferrer" className="social-link" aria-label="Email"><i className="fas fa-envelope"></i></a>
                 </div>
             </div>
             <div className="hero-visual">

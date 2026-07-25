@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
@@ -13,7 +14,9 @@ export default function Footer() {
                         <a href="https://github.com/sandeepmeena0" target="_blank" rel="noreferrer" aria-label="GitHub"><i className="fab fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/sandeep-meena70/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
                     </div>
-                    <p className="footer-copyright">&copy; {new Date().getFullYear()} Sandeep Meena. All rights reserved.</p>
+                    <p className="footer-copyright">
+                        <Link to="/admin/login" className="admin-secret-link">&copy;</Link> {new Date().getFullYear()} Sandeep Meena. All rights reserved.
+                    </p>
                 </div>
             </div>
         </footer>

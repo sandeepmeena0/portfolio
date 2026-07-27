@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useApi } from './hooks/useApi'
 import Navbar from './components/Navbar'
@@ -26,6 +26,39 @@ import ManageSettings from './admin/ManageSettings'
 import './App.css'
 
 function Portfolio() {
+    const [isAppReady, setIsAppReady] = useState(false)
+    const api = useApi()
+
+    useEffect(() => {
+        const initializeApp = async () => {
+            // Ping the backend to wake it up and pre-load data
+            await api.getSettings()
+            
+            // Brief smooth transition
+            setTimeout(() => {
+                setIsAppReady(true)
+            }, 600)
+        }
+        initializeApp()
+    }, [])
+
+    if (!isAppReady) {
+        return (
+            <div style={{
+                position: 'fixed', inset: 0,
+                backgroundColor: 'var(--bg-primary)',
+                display: 'flex', flexDirection: 'column',
+                justifyContent: 'center', alignItems: 'center',
+                zIndex: 9999, color: 'var(--accent-primary)',
+                fontFamily: 'var(--font-mono)'
+            }}>
+                <div className="projects-spinner" style={{ width: '50px', height: '50px', marginBottom: '20px', borderTopColor: 'var(--accent-primary)', borderRightColor: 'var(--accent-secondary)' }}></div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '8px' }}>Preparing Portfolio</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Waking up the server...</p>
+            </div>
+        )
+    }
+
     return (
         <>
             <CustomCursor />

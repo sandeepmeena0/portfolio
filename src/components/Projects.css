@@ -198,7 +198,12 @@
 /* Responsive */
 @media (max-width: 1024px) { .projects-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 768px) {
-    .projects-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+    .projects-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
     .project-info { padding: 20px; }
     .project-image { height: 180px; }
 }

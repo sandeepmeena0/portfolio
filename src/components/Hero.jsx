@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useScrollAnimation } from '../hooks/useAnimations'
 import './Hero.css'
 
@@ -15,11 +15,12 @@ export default function Hero() {
     const [text, setText] = useState('')
     const [phraseIdx, setPhraseIdx] = useState(0)
     const [isDeleting, setIsDeleting] = useState(false)
+    const visualRef = useRef(null)
 
+    // Typewriter for hero subtitle
     useEffect(() => {
         const currentPhrase = phrases[phraseIdx]
         let timeout
-
         if (!isDeleting) {
             if (text.length < currentPhrase.length) {
                 timeout = setTimeout(() => setText(currentPhrase.slice(0, text.length + 1)), 80)
@@ -37,8 +38,21 @@ export default function Hero() {
         return () => clearTimeout(timeout)
     }, [text, phraseIdx, isDeleting])
 
+    // Mouse parallax on code window — subtle 3D tilt
+    const handleMouseMove = useCallback((e) => {
+        if (!visualRef.current) return
+        const rect = visualRef.current.getBoundingClientRect()
+        const x = (e.clientX - rect.left - rect.width / 2) / rect.width
+        const y = (e.clientY - rect.top - rect.height / 2) / rect.height
+        visualRef.current.style.transform = `perspective(1200px) rotateY(${x * 7}deg) rotateX(${-y * 5}deg)`
+    }, [])
+
+    const handleMouseLeave = useCallback(() => {
+        if (!visualRef.current) return
+        visualRef.current.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)'
+    }, [])
+
     const [badgeRef, badgeVisible] = useScrollAnimation()
-    const [titleRef, titleVisible] = useScrollAnimation()
 
     return (
         <section className="hero" id="hero">
@@ -75,7 +89,14 @@ export default function Hero() {
                     <a href="mailto:sandeepmeena1136@gmail.com" target="_blank" rel="noreferrer" className="social-link" aria-label="Email"><i className="fas fa-envelope"></i></a>
                 </div>
             </div>
-            <div className="hero-visual">
+
+            {/* Code window — parallax tilt on mouse move */}
+            <div
+                className="hero-visual"
+                ref={visualRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+            >
                 <div className="code-window">
                     <div className="code-header">
                         <div className="code-dots">
@@ -84,20 +105,22 @@ export default function Hero() {
                             <span className="dot dot-green"></span>
                         </div>
                         <span className="code-title">developer.js</span>
+                        <span className="code-lang-badge">JS</span>
                     </div>
                     <pre className="code-body"><code>{`const `}<span className="code-variable">developer</span>{` = {\n`}
-                        {`  `}<span className="code-property">name</span>{`: `}<span className="code-string">"Sandeep Meena"</span>{`,\n`}
-                        {`  `}<span className="code-property">role</span>{`: `}<span className="code-string">"MERN Stack Developer"</span>{`,\n`}
-                        {`  `}<span className="code-property">skills</span>{`: [\n`}
-                        {`    `}<span className="code-string">"React"</span>{`, `}<span className="code-string">"Node.js"</span>{`,\n`}
-                        {`    `}<span className="code-string">"Express"</span>{`, `}<span className="code-string">"MongoDB"</span>{`\n`}
-                        {`  ],\n`}
-                        {`  `}<span className="code-method">sayHello</span>{`() {\n`}
-                        {`    return `}<span className="code-string">"Let's build something!"</span>{`;\n`}
-                        {`  }\n`}
-                        {`};`}</code></pre>
+{`  `}<span className="code-property">name</span>{`: `}<span className="code-string">"Sandeep Meena"</span>{`,\n`}
+{`  `}<span className="code-property">role</span>{`: `}<span className="code-string">"MERN Stack Developer"</span>{`,\n`}
+{`  `}<span className="code-property">skills</span>{`: [\n`}
+{`    `}<span className="code-string">"React"</span>{`, `}<span className="code-string">"Node.js"</span>{`,\n`}
+{`    `}<span className="code-string">"Express"</span>{`, `}<span className="code-string">"MongoDB"</span>{`\n`}
+{`  ],\n`}
+{`  `}<span className="code-method">sayHello</span>{`() {\n`}
+{`    return `}<span className="code-string">"Let's build something!"</span>{`;\n`}
+{`  }\n`}
+{`};`}</code></pre>
                 </div>
             </div>
+
             <div className="scroll-indicator">
                 <div className="scroll-mouse"><div className="scroll-wheel"></div></div>
                 <span>Scroll Down</span>

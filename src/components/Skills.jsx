@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useScrollAnimation } from '../hooks/useAnimations'
 import './Skills.css'
 
@@ -41,22 +41,50 @@ const skillCategories = [
     }
 ]
 
-function SkillCategory({ category, delay }) {
-    const [ref, visible] = useScrollAnimation(0.3)
-    const barsRef = useRef([])
+function SkillBar({ skill, visible, delay }) {
+    const [displayLevel, setDisplayLevel] = useState(0)
+    const barRef = useRef(null)
 
     useEffect(() => {
-        if (visible) {
-            barsRef.current.forEach((bar, i) => {
-                if (bar) {
-                    setTimeout(() => {
-                        bar.style.setProperty('--level', category.skills[i].level + '%')
-                        bar.classList.add('animated')
-                    }, i * 100)
-                }
-            })
-        }
-    }, [visible, category.skills])
+        if (!visible) return
+        const timer = setTimeout(() => {
+            // Animate the number
+            const duration = 900
+            const start = performance.now()
+            const animate = (now) => {
+                const progress = Math.min((now - start) / duration, 1)
+                const eased = 1 - Math.pow(1 - progress, 3)
+                setDisplayLevel(Math.round(eased * skill.level))
+                if (progress < 1) requestAnimationFrame(animate)
+            }
+            requestAnimationFrame(animate)
+            // Animate bar width
+            if (barRef.current) {
+                barRef.current.style.setProperty('--level', skill.level + '%')
+                barRef.current.classList.add('animated')
+            }
+        }, delay)
+        return () => clearTimeout(timer)
+    }, [visible, skill.level, delay])
+
+    return (
+        <div className="skill-item">
+            <div className="skill-item-header">
+                <div className="skill-item-left">
+                    <i className={skill.icon}></i>
+                    <span>{skill.name}</span>
+                </div>
+                <span className={`skill-percent ${visible ? 'visible' : ''}`}>{displayLevel}%</span>
+            </div>
+            <div className="skill-track">
+                <div className="skill-level" ref={barRef} data-level={skill.level}></div>
+            </div>
+        </div>
+    )
+}
+
+function SkillCategory({ category, delay }) {
+    const [ref, visible] = useScrollAnimation(0.3)
 
     return (
         <div
@@ -72,15 +100,12 @@ function SkillCategory({ category, delay }) {
             </div>
             <div className="skill-items">
                 {category.skills.map((skill, i) => (
-                    <div className="skill-item" key={skill.name}>
-                        <i className={skill.icon}></i>
-                        <span>{skill.name}</span>
-                        <div
-                            className="skill-level"
-                            ref={el => barsRef.current[i] = el}
-                            data-level={skill.level}
-                        ></div>
-                    </div>
+                    <SkillBar
+                        key={skill.name}
+                        skill={skill}
+                        visible={visible}
+                        delay={i * 120}
+                    />
                 ))}
             </div>
         </div>

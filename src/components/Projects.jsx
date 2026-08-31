@@ -10,6 +10,24 @@ const filters = [
     { label: 'Backend', value: 'backend' },
 ]
 
+function SkeletonCard({ index }) {
+    return (
+        <div className="project-card skeleton-card" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="skeleton-image shimmer"></div>
+            <div className="skeleton-body">
+                <div className="skeleton-title shimmer"></div>
+                <div className="skeleton-line shimmer"></div>
+                <div className="skeleton-line short shimmer"></div>
+                <div className="skeleton-tags">
+                    <div className="skeleton-tag shimmer"></div>
+                    <div className="skeleton-tag shimmer"></div>
+                    <div className="skeleton-tag shimmer"></div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState('all')
     const [projects, setProjects] = useState([])
@@ -19,9 +37,13 @@ export default function Projects() {
 
     useEffect(() => {
         const loadProjects = async () => {
-            const res = await api.fetchProjects()
-            if (res.success) {
-                setProjects(res.data)
+            try {
+                const res = await api.fetchProjects()
+                if (res.success) {
+                    setProjects(res.data)
+                }
+            } catch (e) {
+                // fail silently
             }
             setLoading(false)
         }
@@ -52,18 +74,22 @@ export default function Projects() {
                     ))}
                 </div>
                 {loading ? (
-                    <div className="projects-loading">
-                        <div className="projects-spinner"></div>
-                        <p>Fetching projects from live server... (takes a few seconds if server is waking up)</p>
+                    <div className="projects-grid">
+                        {[0, 1, 2].map(i => <SkeletonCard key={i} index={i} />)}
                     </div>
                 ) : filtered.length === 0 ? (
-                    <div className="projects-loading">
-                        <p>No projects found. Add some from the admin panel!</p>
+                    <div className="projects-empty">
+                        <i className="fas fa-folder-open"></i>
+                        <p>No projects found in this category.</p>
                     </div>
                 ) : (
                     <div className="projects-grid">
                         {filtered.map((project, i) => (
-                            <ProjectCard key={project.id || project.title || i} project={project} index={i} />
+                            <ProjectCard
+                                key={project._id || project.id || project.title || i}
+                                project={project}
+                                index={i}
+                            />
                         ))}
                     </div>
                 )}
@@ -90,14 +116,12 @@ function ProjectCard({ project, index }) {
     }
 
     const handleCardClick = (e) => {
-        if (e.target.closest('.project-link')) {
-            return
-        }
+        if (e.target.closest('.project-link')) return
         const targetUrl = project.live || project.github
-        if (targetUrl) {
-            window.open(targetUrl, '_blank', 'noopener,noreferrer')
-        }
+        if (targetUrl) window.open(targetUrl, '_blank', 'noopener,noreferrer')
     }
+
+    const techList = Array.isArray(project.tech) ? project.tech : []
 
     return (
         <div
@@ -113,15 +137,15 @@ function ProjectCard({ project, index }) {
                     <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                     <div className="project-image-placeholder">
-                        <i className={project.icon}></i>
+                        <i className={project.icon || 'fas fa-code'}></i>
                     </div>
                 )}
                 <div className="project-overlay">
                     <div className="project-links">
-                        <a href={project.live} className="project-link" title="View Live" target="_blank" rel="noreferrer">
+                        <a href={project.live || '#'} className="project-link" title="View Live" target="_blank" rel="noreferrer">
                             <i className="fas fa-external-link-alt"></i>
                         </a>
-                        <a href={project.github} className="project-link" title="View Code" target="_blank" rel="noreferrer">
+                        <a href={project.github || '#'} className="project-link" title="View Code" target="_blank" rel="noreferrer">
                             <i className="fab fa-github"></i>
                         </a>
                     </div>
@@ -131,7 +155,7 @@ function ProjectCard({ project, index }) {
                 <h3 className="project-title">{project.title}</h3>
                 <p className="project-description">{project.description}</p>
                 <div className="project-tech">
-                    {project.tech.map(t => <span key={t}>{t}</span>)}
+                    {techList.map(t => <span key={t}>{t}</span>)}
                 </div>
             </div>
         </div>

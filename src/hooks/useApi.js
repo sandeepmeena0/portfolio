@@ -206,6 +206,32 @@ export const useApi = () => {
         }
     };
 
+    const getVisitorLogs = async (page = 1, limit = 50) => {
+        try {
+            const res = await fetch(`${API_URL}/analytics/logs?page=${page}&limit=${limit}`, {
+                method: 'GET',
+                headers: getHeaders(true)
+            });
+            return await res.json();
+        } catch (error) {
+            console.error('Error fetching visitor logs:', error);
+            return { success: false, data: [] };
+        }
+    };
+
+    const clearVisitorLogs = async () => {
+        try {
+            const res = await fetch(`${API_URL}/analytics/logs`, {
+                method: 'DELETE',
+                headers: getHeaders(true)
+            });
+            return await res.json();
+        } catch (error) {
+            console.error('Error clearing logs:', error);
+            return { success: false };
+        }
+    };
+
     return {
         fetchProjects,
         submitContact,
@@ -221,6 +247,8 @@ export const useApi = () => {
         updateProject,
         deleteProject,
         getSettings,
-        updateSettings
+        updateSettings,
+        getVisitorLogs,
+        clearVisitorLogs
     };
 };

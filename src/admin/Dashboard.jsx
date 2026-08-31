@@ -31,6 +31,13 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="stat-card">
+                    <div className="stat-icon" style={{ background: 'hsla(220,100%,60%,0.15)', color: 'hsl(220,100%,60%)' }}><i className="fas fa-calendar-day"></i></div>
+                    <div className="stat-info">
+                        <h3>Today's Views</h3>
+                        <div className="stat-value">{data.todayViews ?? 0}</div>
+                    </div>
+                </div>
+                <div className="stat-card">
                     <div className="stat-icon"><i className="fas fa-project-diagram"></i></div>
                     <div className="stat-info">
                         <h3>Projects</h3>

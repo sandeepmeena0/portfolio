@@ -3,7 +3,8 @@
     border-top: 1px solid var(--border-color);
     position: relative;
     z-index: 1;
-    overflow: hidden;
+    width: 100%;
+    overflow-x: hidden;
 }
 /* Subtle gradient glow behind footer */
 .footer::before {

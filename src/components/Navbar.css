@@ -82,19 +82,24 @@
     .navbar { top: 12px; width: calc(100% - 32px); border-radius: 14px; }
     .nav-links {
         position: fixed;
-        top: 0; right: -100%;
+        top: 0; right: 0;
         width: 260px;
         height: 100vh;
         flex-direction: column;
         background: var(--bg-secondary);
         padding: 80px 24px 32px;
         border-left: 1px solid var(--border-color);
-        transition: right var(--transition-base);
+        transform: translateX(100%);
+        visibility: hidden;
+        transition: transform var(--transition-base), visibility var(--transition-base);
         gap: 4px;
         z-index: 1000;
         border-radius: 0;
     }
-    .nav-links.active { right: 0; }
+    .nav-links.active {
+        transform: translateX(0);
+        visibility: visible;
+    }
     .nav-toggle { display: flex; }
     .nav-link { padding: 12px 16px; font-size: 1rem; }
 }
